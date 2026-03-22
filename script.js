@@ -109,8 +109,8 @@ const properties = [
   },
 ]
 
-const users = JSON.parse(localStorage.getItem("luxeHomeUsers")) || []
-let currentUser = JSON.parse(localStorage.getItem("luxeHomeCurrentUser")) || null
+const users = JSON.parse(localStorage.getItem("properteaseUsers")) || []
+let currentUser = JSON.parse(localStorage.getItem("properteaseCurrentUser")) || null
 const allProperties = [...properties]
 
 let activeFilters = {
@@ -129,7 +129,7 @@ let anyClicked = {
 
 function getFavorites() {
   if (!currentUser) return []
-  const allFavorites = JSON.parse(localStorage.getItem("luxeHomeFavorites")) || {}
+  const allFavorites = JSON.parse(localStorage.getItem("properteaseFavorites")) || {}
   return allFavorites[currentUser.id] || []
 }
 
@@ -293,7 +293,7 @@ function openLogoutConfirm() {
 
 function confirmLogout() {
   currentUser = null
-  localStorage.removeItem("luxeHomeCurrentUser")
+  localStorage.removeItem("properteaseCurrentUser")
   logoutModal.classList.remove("active")
   updateAuthNav()
   navigateTo("home")
@@ -427,7 +427,7 @@ function handleLogin(e) {
   }
 
   currentUser = foundUser
-  localStorage.setItem("luxeHomeCurrentUser", JSON.stringify(foundUser))
+  localStorage.setItem("properteaseCurrentUser", JSON.stringify(foundUser))
   authModal.classList.remove("active")
   updateAuthNav()
 }
@@ -467,10 +467,10 @@ function handleRegister(e) {
   }
 
   users.push(newUser)
-  localStorage.setItem("luxeHomeUsers", JSON.stringify(users))
+  localStorage.setItem("properteaseUsers", JSON.stringify(users))
 
   currentUser = newUser
-  localStorage.setItem("luxeHomeCurrentUser", JSON.stringify(newUser))
+  localStorage.setItem("properteaseCurrentUser", JSON.stringify(newUser))
   authModal.classList.remove("active")
   updateAuthNav()
 }
@@ -665,7 +665,7 @@ function toggleFavorite(propertyId) {
     return
   }
 
-  const allFavorites = JSON.parse(localStorage.getItem("luxeHomeFavorites")) || {}
+  const allFavorites = JSON.parse(localStorage.getItem("properteaseFavorites")) || {}
   if (!allFavorites[currentUser.id]) {
     allFavorites[currentUser.id] = []
   }
@@ -677,7 +677,7 @@ function toggleFavorite(propertyId) {
     allFavorites[currentUser.id].push(propertyId)
   }
 
-  localStorage.setItem("luxeHomeFavorites", JSON.stringify(allFavorites))
+  localStorage.setItem("properteaseFavorites", JSON.stringify(allFavorites))
 
   // Redraw lists so heart icons match saved favourites
   renderFeaturedPropertiesHome()
@@ -1188,8 +1188,8 @@ function handleEditProfile(e) {
   }
   if (userIndex >= 0) {
     users[userIndex] = currentUser
-    localStorage.setItem("luxeHomeUsers", JSON.stringify(users))
-    localStorage.setItem("luxeHomeCurrentUser", JSON.stringify(currentUser))
+    localStorage.setItem("properteaseUsers", JSON.stringify(users))
+    localStorage.setItem("properteaseCurrentUser", JSON.stringify(currentUser))
   }
 
   displayProfile()
