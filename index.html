@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propertease - Premium Real Estate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- nav bar at top -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="logo">Propertease</a>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" onclick="navigateTo('home')">Home</a></li>
+                    <li><a href="index.html#properties" onclick="navigateTo('properties')">Properties</a></li>
+                    <li><a href="index.html#emi" onclick="navigateTo('emi')">EMI Calculator</a></li>
+                    <li id="authNav"></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- home screen -->
+    <div id="homePage">
+        <!-- banner + search -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Find Your Dream Home</h1>
+                <p>Discover premium properties in the most desirable locations</p>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search by location...">
+                    <button type="button" id="searchBtn" onclick="handleHomeSearch()">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- quick filters before featured list -->
+        <section class="filters">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label>Price Range:</label>
+                    <select id="homeFilterPrice">
+                        <option value="">All Prices</option>
+                        <!-- each value = min rupees and max rupees -->
+                        <option value="0-2000000">Up to ₹20 lakh</option>
+                        <option value="2000000-4000000">₹20 lakh – ₹40 lakh</option>
+                        <option value="4000000-6000000">₹40 lakh – ₹60 lakh</option>
+                        <option value="6000000-10000000">₹60 lakh – ₹1 crore</option>
+                        <option value="10000000-">Above ₹1 crore</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Property Type:</label>
+                    <select id="homeFilterType">
+                        <option value="">All Types</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="villa">Villa</option>
+                        <option value="house">House</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>BHK:</label>
+                    <select id="homeFilterBhk">
+                        <option value="">Any</option>
+                        <option value="1">1 BHK</option>
+                        <option value="2">2 BHK</option>
+                        <option value="3">3 BHK</option>
+                    </select>
+                </div>
+                <button class="reset-btn" onclick="applyHomeFiltersAndSearch()">Search</button>
+            </div>
+        </section>
+
+        <!-- 3 cards + view more -->
+        <section id="featuredPropertiesHome" class="featured-properties-section">
+            <div class="container">
+                <h2>Featured Properties</h2>
+                <div id="homePropertiesGrid" class="properties-grid"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- logged in user area -->
+    <div id="dashboardPage" class="hidden">
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1>My Dashboard</h1>
+                    <a href="index.html" onclick="navigateTo('home')" class="back-link">← Back to Home</a>
+                </div>
+
+                <div class="dashboard-tabs">
+                    <button class="dashboard-tab active" onclick="switchDashboardTab('listings')">My Listings</button>
+                    <button class="dashboard-tab" onclick="switchDashboardTab('favorites')">My Favorites</button>
+                    <button class="dashboard-tab" onclick="switchDashboardTab('upload')">Upload Property</button>
+                    <button class="dashboard-tab" onclick="switchDashboardTab('profile')">Profile</button>
+                </div>
+
+                <!-- tab: stuff you uploaded -->
+                <div id="listingsTab" class="dashboard-tab-content active">
+                    <h2>My Uploaded Properties</h2>
+                    <div id="myListingsGrid" class="properties-grid"></div>
+                </div>
+
+                <!-- tab: saved homes -->
+                <div id="favoritesTab" class="dashboard-tab-content">
+                    <h2>My Favorite Properties</h2>
+                    <div id="favoritesGrid" class="properties-grid"></div>
+                </div>
+
+                <!-- tab: add new listing -->
+                <div id="uploadTab" class="dashboard-tab-content">
+                    <div class="upload-form-container">
+                        <h2>Upload a New Property</h2>
+                        <form id="propertyUploadForm" class="property-form">
+                            <div class="form-group">
+                                <label for="propTitle">Property Title:</label>
+                                <input type="text" id="propTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="propLocation">Location:</label>
+                                <input type="text" id="propLocation" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="propPrice">Price :</label>
+                                <input type="number" id="propPrice" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="propType">Property Type:</label>
+                                <select id="propType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="apartment">Apartment</option>
+                                    <option value="villa">Villa</option>
+                                    <option value="house">House</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="propBhk">BHK:</label>
+                                <select id="propBhk" required>
+                                    <option value="">Select BHK</option>
+                                    <option value="1">1 BHK</option>
+                                    <option value="2">2 BHK</option>
+                                    <option value="3">3 BHK</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="propBathrooms">Bathrooms:</label>
+                                <input type="number" id="propBathrooms" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="propSqft">Square Feet:</label>
+                                <input type="number" id="propSqft" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="propDescription">Description:</label>
+                                <textarea id="propDescription" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="propImage">Image URL:</label>
+                                <input type="text" id="propImage" placeholder="Enter image URL" required>
+                            </div>
+                            <button type="submit" class="submit-btn">Upload Property</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- tab: edit your details -->
+                <div id="profileTab" class="dashboard-tab-content">
+                    <div class="profile-container">
+                        <h2>My Profile</h2>
+                        <div class="profile-info-display">
+                            <div class="profile-field">
+                                <label>Name:</label>
+                                <p id="profileName"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Email:</label>
+                                <p id="profileEmail"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Account Type:</label>
+                                <p id="profileType"></p>
+                            </div>
+                            <div id="sellerProfileField" class="profile-field hidden">
+                                <label>Company Name:</label>
+                                <p id="profileCompany"></p>
+                            </div>
+                            <div id="agentProfileField" class="profile-field hidden">
+                                <label>License Number:</label>
+                                <p id="profileLicense"></p>
+                            </div>
+                            <div id="agentBrokerageField" class="profile-field hidden">
+                                <label>Brokerage Name:</label>
+                                <p id="profileBrokerage"></p>
+                            </div>
+                        </div>
+                        <button class="edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
+
+                        <form id="editProfileForm" class="edit-profile-form hidden">
+                            <div class="form-group">
+                                <label for="editName">Name:</label>
+                                <input type="text" id="editName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmail">Email:</label>
+                                <input type="email" id="editEmail" required>
+                            </div>
+                            <div id="editSellerField" class="form-group hidden">
+                                <label for="editCompany">Company Name:</label>
+                                <input type="text" id="editCompany">
+                            </div>
+                            <div id="editAgentLicenseField" class="form-group hidden">
+                                <label for="editLicense">License Number:</label>
+                                <input type="text" id="editLicense">
+                            </div>
+                            <div id="editAgentBrokerageField" class="form-group hidden">
+                                <label for="editBrokerage">Brokerage Name:</label>
+                                <input type="text" id="editBrokerage">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="submit-btn">Save Changes</button>
+                                <button type="button" class="cancel-btn" onclick="toggleEditProfile()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- loan emi page -->
+    <div id="emiPage" class="hidden">
+        <section class="emi-section">
+            <div class="container">
+                <div class="emi-header">
+                    <h1>EMI Calculator</h1>
+                    <p>Calculate your monthly EMI easily</p>
+                </div>
+
+                <div class="emi-container">
+                    <div class="emi-calculator">
+                        <form id="emiForm">
+                            <div class="form-group">
+                                <label for="loanAmount">Loan Amount (₹)</label>
+                                <input type="number" id="loanAmount" placeholder="Enter loan amount" value="500000" required>
+                                <input type="range" id="loanAmountSlider" min="50000" max="10000000" step="50000" value="500000">
+                                <div class="range-values">
+                                    <span>₹50K</span>
+                                    <span id="loanAmountDisplay">₹ 5,00,000</span>
+                                    <span>₹1Cr</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="interestRate">Interest Rate (% per annum)</label>
+                                <input type="number" id="interestRate" placeholder="Enter interest rate" value="7" step="0.1" required>
+                                <input type="range" id="interestRateSlider" min="2" max="15" step="0.1" value="7">
+                                <div class="range-values">
+                                    <span>2%</span>
+                                    <span id="interestRateDisplay">7%</span>
+                                    <span>15%</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loanTenure">Loan Tenure (Months)</label>
+                                <input type="number" id="loanTenure" placeholder="Enter loan tenure" value="240" required>
+                                <input type="range" id="loanTenureSlider" min="12" max="480" step="12" value="240">
+                                <div class="range-values">
+                                    <span>1 year</span>
+                                    <span id="loanTenureDisplay">240 months</span>
+                                    <span>40 years</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="calculate-btn" onclick="calculateEMI()">Calculate EMI</button>
+                        </form>
+                    </div>
+
+                    <div class="emi-results">
+                        <div class="result-card">
+                            <h3>Monthly EMI</h3>
+                            <p class="result-value" id="monthlyEMI">-</p>
+                        </div>
+                        <div class="result-card">
+                            <h3>Total Amount Payable</h3>
+                            <p class="result-value" id="totalAmount">-</p>
+                        </div>
+                        <div class="result-card">
+                            <h3>Total Interest</h3>
+                            <p class="result-value" id="totalInterest">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- login popup -->
+    <div class="modal" id="authModal">
+        <div class="modal-content auth-modal">
+            <button class="modal-close" id="authModalClose">&times;</button>
+            <div id="authModalBody"></div>
+        </div>
+    </div>
+
+    <!-- are you sure logout -->
+    <div class="modal" id="logoutModal">
+        <div class="modal-content confirm-modal">
+            <h2>Confirm Logout</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="document.getElementById('logoutModal').classList.remove('active')">Cancel</button>
+                <button class="btn-confirm" onclick="confirmLogout()">Yes, Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- one house full info -->
+    <div id="propertyDetailPage" class="hidden">
+        <section class="property-detail-section">
+            <div class="container">
+                <a href="#" onclick="navigateTo('properties')" class="back-link">← Back to Properties</a>
+                <div id="propertyDetailContent"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- search all + filters on left -->
+    <div id="propertiesPage" class="hidden">
+        <section class="properties-page-section">
+            <div class="container-wide">
+                <div class="properties-page-container">
+                    <!-- left column filters -->
+                    <aside class="filters-sidebar">
+                        <div class="sidebar-header">
+                            <h3>Filters</h3>
+                            <button class="clear-filters" id="clearFiltersBtn">Clear All</button>
+                        </div>
+
+                        <!-- min max price -->
+                        <div class="filter-card">
+                            <h4>Price Range</h4>
+                            <div class="price-inputs">
+                                <input type="number" id="minPriceInput" placeholder="Min" class="price-input">
+                                <input type="number" id="maxPriceInput" placeholder="Max" class="price-input">
+                            </div>
+                        </div>
+
+                        <!-- flat villa etc -->
+                        <div class="filter-card">
+                            <h4>Property Type</h4>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="propertyType" value="apartment"> Apartment
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="propertyType" value="villa"> Villa
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="propertyType" value="house"> House
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="propertyType" value="townhouse"> Townhouse
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="propertyType" value="penthouse"> Penthouse
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- rooms + baths -->
+                        <div class="filter-card">
+                            <h4>Beds & Baths</h4>
+                            <div class="filter-subsection">
+                                <label>Bedrooms</label>
+                                <div class="filter-buttons">
+                                    <button class="filter-btn" data-filter="bhk" data-value="any" onclick="filterByBhk('any')">Any</button>
+                                    <button class="filter-btn" data-filter="bhk" data-value="1" onclick="filterByBhk('1')">1+</button>
+                                    <button class="filter-btn" data-filter="bhk" data-value="2" onclick="filterByBhk('2')">2+</button>
+                                    <button class="filter-btn" data-filter="bhk" data-value="3" onclick="filterByBhk('3')">3+</button>
+                                    <button class="filter-btn" data-filter="bhk" data-value="4" onclick="filterByBhk('4')">4+</button>
+                                    <button class="filter-btn" data-filter="bhk" data-value="5" onclick="filterByBhk('5')">5+</button>
+                                </div>
+                            </div>
+                            <div class="filter-subsection">
+                                <label>Bathrooms</label>
+                                <div class="filter-buttons">
+                                    <button class="filter-btn" data-filter="bath" data-value="any" onclick="filterByBath('any')">Any</button>
+                                    <button class="filter-btn" data-filter="bath" data-value="1" onclick="filterByBath('1')">1+</button>
+                                    <button class="filter-btn" data-filter="bath" data-value="2" onclick="filterByBath('2')">2+</button>
+                                    <button class="filter-btn" data-filter="bath" data-value="3" onclick="filterByBath('3')">3+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- pool gym etc (checkboxes) -->
+                        <div class="filter-card">
+                            <h4>Amenities</h4>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="parking" onchange="filterByAmenities()"> Parking
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="pool" onchange="filterByAmenities()"> Pool
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="gym" onchange="filterByAmenities()"> Gym
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="garden" onchange="filterByAmenities()"> Garden
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="fireplace" onchange="filterByAmenities()"> Fireplace
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- new / featured etc -->
+                        <div class="filter-card">
+                            <h4>Listing Status</h4>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="listingStatus" value="new" onchange="filterByListingStatus()"> New
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="listingStatus" value="featured" onchange="filterByListingStatus()"> Featured
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="listingStatus" value="sale" onchange="filterByListingStatus()"> For Sale
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="listingStatus" value="hot-deal" onchange="filterByListingStatus()"> Hot Deal
+                                </label>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- grid of cards -->
+                    <main class="properties-main">
+                        <div class="properties-header">
+                            <h2>Search Properties</h2>
+                            <div class="search-section">
+                                <input type="text" id="propertiesSearchInput" placeholder="Search properties..." class="search-input">
+                                <button id="propertiesSearchBtn" class="search-submit">Search</button>
+                            </div>
+                        </div>
+                        <div id="propertiesGridPage" class="properties-grid"></div>
+                    </main>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
