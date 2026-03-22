@@ -7,7 +7,7 @@ const properties = [
     bhk: 1,
     bathrooms: 1,
     sqft: 464,
-    image: "images/Eternia.png",
+    image: "Eternia.png",
     propertyType: "Apartment",
     description:
       "Stunning apartment with floor-to-ceiling windows, marble finishes, and state-of-the-art amenities. Located in the heart of Thane West with breathtaking city views.",
@@ -25,7 +25,7 @@ const properties = [
     bhk: 3,
     bathrooms: 4,
     sqft: 1450,
-    image: "images/Villa.jpg",
+    image: "Villa.jpg",
     propertyType: "Villa",
     description:
       "Premium coastal villa community with clubhouse, landscaped gardens and sea-breeze balconies. Ideal for families looking for spacious homes in Vasai’s fast-growing suburb.",
@@ -43,7 +43,7 @@ const properties = [
     bhk: 2,
     bathrooms: 2,
     sqft: 726,
-    image: "images/Raymond.png",
+    image: "Raymond.png",
     propertyType: "Apartment",
     description:
       "Modern high-rise apartments by a trusted Indian brand, with lifestyle amenities and excellent connectivity on Pokharan Road, Thane West.",
@@ -61,7 +61,7 @@ const properties = [
     bhk: 4,
     bathrooms: 4,
     sqft: 3600,
-    image: "images/modern-luxury-penthouse-apartment.jpg",
+    image: "modern-luxury-penthouse-apartment.jpg",
     propertyType: "Penthouse",
     description:
       "Ultra-luxury sky residences with panoramic views of the Arabian Sea, Worli Sea Link and South Mumbai skyline.",
@@ -79,7 +79,7 @@ const properties = [
     bhk: 2,
     bathrooms: 2,
     sqft: 851,
-    image: "images/industrial-urban-loft-modern-design.jpg",
+    image: "industrial-urban-loft-modern-design.jpg",
     propertyType: "apartment",
     description:
       "Family-friendly gated community in the heart of Thane with schools, malls and healthcare within easy reach.",
@@ -97,7 +97,7 @@ const properties = [
     bhk: 4,
     bathrooms: 4,
     sqft: 2900,
-    image: "images/luxury-desert-mansion-swimming-pool.jpg",
+    image: "luxury-desert-mansion-swimming-pool.jpg",
     propertyType: "villa",
     description:
       "Signature Hiranandani luxury residences overlooking Powai Lake and the green hills around Hiranandani Gardens.",
